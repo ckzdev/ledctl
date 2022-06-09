@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	mmap "github.com/edsrzf/mmap-go"
+	"github.com/edsrzf/mmap-go"
 	"os"
 )
 

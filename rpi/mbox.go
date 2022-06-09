@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	mmap "github.com/edsrzf/mmap-go"
-	"log"
 	"os"
 	"path"
 	"reflect"
@@ -91,7 +90,7 @@ func (rp *RPi) getPhysBuf(size uint32) (*PhysBuf, error) {
 		rp.freeVCMem(pb.handle)   // Ignore error
 		return nil, fmt.Errorf("couldn't map busAddr(%X) of size %v: %v", pb.busAddr, size, err)
 	}
-	log.Printf("mapped %d bytes, busaddr %08X, offset %d\n", size, pb.busAddr, pb.offs)
+	//log.Printf("mapped %d bytes, busaddr %08X, offset %d\n", size, pb.busAddr, pb.offs)
 	return &pb, nil
 }
 
@@ -113,7 +112,7 @@ func (rp *RPi) mapMem(physAddr uintptr, size int) (mmap.MMap, uintptr, error) {
 	pagemask := ^uintptr(PAGE_SIZE - 1)
 	mapAddr := physAddr & pagemask
 	size += int(physAddr - mapAddr)
-	log.Printf("MapRegion(f, %d, RDWR, 0, %08X), physAddr %08X, mask %08X\n", size, int64(mapAddr), physAddr, pagemask)
+	//log.Printf("MapRegion(f, %d, RDWR, 0, %08X), physAddr %08X, mask %08X\n", size, int64(mapAddr), physAddr, pagemask)
 	mm, err := mmap.MapRegion(f, size, mmap.RDWR, 0, int64(mapAddr))
 	if err != nil {
 		return nil, 0, fmt.Errorf("couldn't map region (%v, %v): %v", physAddr, size, err)

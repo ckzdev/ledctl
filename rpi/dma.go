@@ -2,7 +2,6 @@ package rpi
 
 import (
 	"fmt"
-	"log"
 	"time"
 	"unsafe"
 )
@@ -86,7 +85,7 @@ func (rp *RPi) GetDMABuf(bytes uint) (*DMABuf, error) {
 		return nil, fmt.Errorf("couldn't get %d byte phyical buffer for DMA: %v", bytes, err)
 	}
 	d.c = (*dmaControl)(unsafe.Pointer(&d.pb.buf[d.pb.offs]))
-	log.Printf("dmabuf size %d, calc %d, addr %08X\n", bytes, calcDMABufSize(bytes), uintptr(unsafe.Pointer(d.c)))
+	//log.Printf("dmabuf size %d, calc %d, addr %08X\n", bytes, calcDMABufSize(bytes), uintptr(unsafe.Pointer(d.c)))
 	return &d, nil
 }
 
@@ -121,7 +120,7 @@ func (rp *RPi) InitDMA(dma int) error {
 	if err != nil {
 		return fmt.Errorf("couldn't map dmaT at %08X: %v", offset, err)
 	}
-	log.Printf("Got dmaBuf[%d], offset %d\n", len(rp.dmaBuf), bufOffs)
+	//log.Printf("Got dmaBuf[%d], offset %d\n", len(rp.dmaBuf), bufOffs)
 	rp.dma = (*dmaT)(unsafe.Pointer(&rp.dmaBuf[bufOffs]))
 	return nil
 }

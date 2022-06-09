@@ -2,7 +2,6 @@ package rpi
 
 import (
 	"fmt"
-	"log"
 	"time"
 	"unsafe"
 )
@@ -123,7 +122,7 @@ func (rp *RPi) InitGPIO() error {
 	if err != nil {
 		return fmt.Errorf("couldn't map gpioT at %08X: %v", GPIO_OFFSET+rp.hw.periphBase, err)
 	}
-	log.Printf("Got gpioBuf[%d], offset %d\n", len(rp.gpioBuf), bufOffs)
+	//log.Printf("Got gpioBuf[%d], offset %d\n", len(rp.gpioBuf), bufOffs)
 	rp.gpio = (*gpioT)(unsafe.Pointer(&rp.gpioBuf[bufOffs]))
 	return nil
 }

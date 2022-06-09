@@ -2,7 +2,6 @@ package rpi
 
 import (
 	"fmt"
-	"log"
 	"time"
 	"unsafe"
 )
@@ -86,7 +85,7 @@ func (rp *RPi) InitPWM(freq uint, buf *DMABuf, bytes uint, pins []int) error {
 		if err != nil {
 			return fmt.Errorf("couldn't map pwmT at %08X: %v", PWM_OFFSET+rp.hw.periphBase, err)
 		}
-		log.Printf("Got pwmBuf[%d], offset %d\n", len(rp.pwmBuf), bufOffs)
+		//log.Printf("Got pwmBuf[%d], offset %d\n", len(rp.pwmBuf), bufOffs)
 		rp.pwm = (*pwmT)(unsafe.Pointer(&rp.pwmBuf[bufOffs]))
 
 		// This could potentially be in a clk.go. Seems not worth it yet, though.
@@ -94,7 +93,7 @@ func (rp *RPi) InitPWM(freq uint, buf *DMABuf, bytes uint, pins []int) error {
 		if err != nil {
 			return fmt.Errorf("couldn't map cmClkT at %08X: %v", CM_PWM_OFFSET+rp.hw.periphBase, err)
 		}
-		log.Printf("Got cmClkBuf[%d], offset %d\n", len(rp.cmClkBuf), bufOffs)
+		//log.Printf("Got cmClkBuf[%d], offset %d\n", len(rp.cmClkBuf), bufOffs)
 		rp.cmClk = (*cmClkT)(unsafe.Pointer(&rp.cmClkBuf[bufOffs]))
 	}
 
@@ -105,12 +104,12 @@ func (rp *RPi) InitPWM(freq uint, buf *DMABuf, bytes uint, pins []int) error {
 	rp.cmClk.ctl = CM_CLK_CTL_PASSWD | CM_CLK_CTL_SRC_OSC
 	rp.cmClk.ctl = CM_CLK_CTL_PASSWD | CM_CLK_CTL_SRC_OSC | CM_CLK_CTL_ENAB
 	time.Sleep(10 * time.Microsecond)
-	log.Printf("Waiting for cmClk busy\n")
+	//log.Printf("Waiting for cmClk busy\n")
 	i := 0
 	for (rp.cmClk.ctl & CM_CLK_CTL_BUSY) == 0 {
 		i++
 	}
-	log.Printf("Done %d\n", i)
+	//log.Printf("Done %d\n", i)
 
 	// Set up the PWM, use delays as the block is rumored to lock up without them.  Make
 	// sure to use a high enough priority to avoid any FIFO underruns, especially if
@@ -136,11 +135,11 @@ func (rp *RPi) InitPWM(freq uint, buf *DMABuf, bytes uint, pins []int) error {
 		RPI_DMA_TI_SRC_INC // Increment src addr
 
 	buf.c.sourceAd = uint32(buf.pb.busAddr + unsafe.Sizeof(dmaControl{}))
-	log.Printf("DMA sourceAd %08X\n", buf.c.sourceAd)
+	//log.Printf("DMA sourceAd %08X\n", buf.c.sourceAd)
 
 	buf.c.destAd = PWM_PERIPH_PHYS + uint32(unsafe.Offsetof(rp.pwm.fif1))
 	buf.c.txLen = uint32(bytes)
-	log.Printf("DMA txLen %d\n", buf.c.txLen)
+	//log.Printf("DMA txLen %d\n", buf.c.txLen)
 	buf.c.stride = 0
 	buf.c.nextconbk = 0
 
@@ -157,10 +156,10 @@ func (rp *RPi) StopPWM() {
 	// Kill the clock if it was already running
 	rp.cmClk.ctl = CM_CLK_CTL_PASSWD | CM_CLK_CTL_KILL
 	time.Sleep(10 * time.Microsecond)
-	log.Printf("Waiting for cmClk not-busy\n")
+	//log.Printf("Waiting for cmClk not-busy\n")
 	i := 0
 	for (rp.cmClk.ctl & CM_CLK_CTL_BUSY) != 0 {
 		i++
 	}
-	log.Printf("Done %d\n", i)
+	//log.Printf("Done %d\n", i)
 }
