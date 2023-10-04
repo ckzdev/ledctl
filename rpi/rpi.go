@@ -465,4 +465,10 @@ var rasPiVariants = map[uint32]hw{
 		vcBase:     VIDEOCORE_BASE_RPI2,
 		name:       "Compute Module 4 - 4GB v1.0",
 	},
+	0xC03141: {
+		hwType:     RPI_HWVER_TYPE_PI4,
+		periphBase: PERIPH_BASE_RPI4,
+		vcBase:     VIDEOCORE_BASE_RPI2,
+		name:       "Compute Module 4 - 4GB v1.0",
+	},
 }
