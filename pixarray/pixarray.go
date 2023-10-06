@@ -12,24 +12,27 @@ const (
 	GBR
 	RGB
 	RBG
+	GRBW
 )
 
 var StringOrders map[string]int = map[string]int{
-	"GRB": GRB,
-	"BRG": BRG,
-	"BGR": BGR,
-	"GBR": GBR,
-	"RGB": RGB,
-	"RBG": RBG,
+	"GRB":  GRB,
+	"BRG":  BRG,
+	"BGR":  BGR,
+	"GBR":  GBR,
+	"RGB":  RGB,
+	"RBG":  RBG,
+	"GRBW": GRBW,
 }
 
 var offsets map[int][]int = map[int][]int{
-	GRB: {0, 1, 2, -1},
-	BRG: {2, 1, 0, -1},
-	BGR: {1, 2, 0, -1},
-	GBR: {0, 2, 1, -1},
-	RGB: {1, 0, 2, -1},
-	RBG: {2, 0, 1, -1},
+	GRB:  {0, 1, 2, -1},
+	BRG:  {2, 1, 0, -1},
+	BGR:  {1, 2, 0, -1},
+	GBR:  {0, 2, 1, -1},
+	RGB:  {1, 0, 2, -1},
+	RBG:  {2, 0, 1, -1},
+	GRBW: {0, 1, 2, 3},
 }
 
 func abs(i int) int {
